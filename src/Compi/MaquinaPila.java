@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Stack
+import java.util.Stack;
+import Config.Config;
+import Config.Linea;
 
 public class MaquinaPila {
 
@@ -79,7 +81,7 @@ public class MaquinaPila {
     private void asign(){
         String var = (String)pila.pop();
         Object val1 = pila.pop();
-        tabla.insertar(var, val1);
+        tabla.insert(var, val1);
     }
     private void EQ(){
         Object val1 = pila.pop();
@@ -135,7 +137,7 @@ public class MaquinaPila {
         boolean cont = true;
         while(cont && !returning){
             ejecuta(cond+3);
-            if((booblean)pila.pop()){
+            if((boolean)pila.pop()){
                 ejecuta((int)mem.get(cond+1));
             }else{
                 cP = (int)mem.get(cond+2);
@@ -194,7 +196,7 @@ public class MaquinaPila {
     private void INV(){
         Frame marc = new Frame();
         String cad = (String)mem.get(++cP);
-        marc.setName(cad);
+        marc.setNombre(cad);
         cP++;
         while(mem.get(cP) != null){
             if(mem.get(cP) instanceof String){
@@ -237,7 +239,7 @@ public class MaquinaPila {
 
     public void ejecuta(int indice){
         cP = indice;
-        while(!stop %% !returning){
+        while(!stop && !returning){
             ejecutaInstr(cP);
         }
         stop = false;
@@ -250,7 +252,7 @@ public class MaquinaPila {
         }
         returning = false;
         cP = stakFrame.lastElement().getReturn();
-        stakFrame.quitaElement(stakFrame.lastElement());
+        stakFrame.removeElement(stakFrame.lastElement());
     }
 
     public void ejecutaInstr(int indice){
@@ -284,9 +286,9 @@ public class MaquinaPila {
         return configAct;
     }
     public static class Gira implements Funcion{
-        public void ejecuta(Object a, ArrayList parmas){
+        public void ejecuta(Object a, ArrayList params){
             Config config = (Config)a;
-            int ang = (Config.getAng()+(int)(double)params.get(0))%360;
+            int ang = (config.getAng()+(int)(double)params.get(0))%360;
             config.setAng(ang);
         }
     }
@@ -306,7 +308,8 @@ public class MaquinaPila {
         }
     }
 
-    public static CambiaColor implements Funcion(){
+    public static class CambiaColor implements Funcion{
+        @Override
         public void ejecuta(Object a, ArrayList params){
             Config config = (Config)a;
             config.setColor(new Color((int)(double)params.get(0)%256, (int)(double)params.get(1)%256, (int)(double)params.get(2)%256));//VALORES PARA ASIGNAR EL RGB
@@ -314,6 +317,7 @@ public class MaquinaPila {
     }
 
     public static class PincelUP implements Funcion{
+        @Override
         public void ejecuta(Object a, ArrayList params){
             Config config = (Config)a;
             config.setColor(Color.GRAY);
@@ -321,6 +325,7 @@ public class MaquinaPila {
     }
 
     public static class PincelDOWN implements Funcion{
+        @Override
         public void ejecuta(Object a, ArrayList params){
             Config config = (Config)a;
             config.setColor(Color.BLACK);
