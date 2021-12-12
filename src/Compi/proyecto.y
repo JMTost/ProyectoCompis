@@ -3,7 +3,7 @@
     import java.lang.Math;
     import java.util.StringTokenizer;
     import java.io.*;
-    import config.Config;
+    import Config.Config;
 %}
 //creación de los tokens
 //OPERACIONES DE IGUALACIÓN
@@ -213,40 +213,40 @@ int yylex(){
         }else
             return 0;
     }
-    s = st.nextToken();
+    cad = st.nextToken();
     try{
         d = Double.valueOf(cad);
         yylval = new ParserVal(d.doubleValue());
         return NUMBER;
     }catch(Exception e){}
 
-    if(esVar(cadena)){
-        if(cadena.equals("proc")){
+    if(esVar(cad)){
+        if(cad.equals("proc")){
             return PROC;
         }
-        if(cadena.charAt(0) == '$'){
+        if(cad.charAt(0) == '$'){
             yylval = new ParserVal((int)Integer.parseInt(cadena.substring(1)));
 			return PARAM;
         }
-        if(cadena.equals("return")){
+        if(cad.equals("return")){
             return RETURN;
         }
-        if(cadena.equals("func")){
+        if(cad.equals("func")){
             return FUNC;
         }
-        if(cadena.equals("if")){
+        if(cad.equals("if")){
             return IF;
         }
-        if(cadena.equals("else")){
+        if(cad.equals("else")){
             return ELSE;
         }
-        if(cadena.equals("while")){
+        if(cad.equals("while")){
             return WHILE;
         }
-        if(cadena.equals("for")){
+        if(cad.equals("for")){
             return FOR;
         }
-        boolen esFunc = false;
+        boolean esFunc = false;
         Object objeto = tablaSimbol.encontrar(cadena);
         if(objeto instanceof Funcion){
             funcaux = (Func)objeto;
@@ -259,31 +259,31 @@ int yylex(){
             return VAR;
         }
     }else{
-        if(cadena.equals("==")){
+        if(cad.equals("==")){
             return COMPARACION;
         }
-        if(cadena.equals("!=")){
+        if(cad.equals("!=")){
             return DIFERENTES;
         }
-        if(cadena.equals("<")){
+        if(cad.equals("<")){
             return MENOR;
         }
-        if(cadena.equals("<=")){
+        if(cad.equals("<=")){
             return MENORIGUAL;
         }
-        if(cadena.equals(">=")){
+        if(cad.equals(">=")){
             return MAYORIGUAL;
         }
-        if(cadena.equals(">")){
+        if(cad.equals(">")){
             return MAYOR;
         }
-        if(cadena.equals("&&")){
+        if(cad.equals("&&")){
             return AND;
         }
-        if(cadena.equals("||")){
+        if(cad.equals("||")){
             return OR;
         }
-        tok = cadena.charAt(0);
+        tok = cad.charAt(0);
     }
     return tok;
     String resv[] = {">", ">=", "&&", "||", "<", "<=", "==", "!=", "=", "{", "}", "(", ")", ",", "*", "+", "-", "|", "[", "]", ";", "/", "!"};
@@ -323,8 +323,8 @@ int yylex(){
         tablaSimbol.insert("PenUP", new MaquinaPila.SubirPincel());
         tablaSimbol.insert("penDOWN", new MaquinaPila.BajarPincel());
     }
-    public Config ejecutarCodigo(String cod){
-        st = new StringTokenizer(ajustCad(cod));
+    public Config ejecutarCodigo(String cad){
+        st = new StringTokenizer(ajustCad(cad));
         newline = false;
         yyparse();
         if(!error)

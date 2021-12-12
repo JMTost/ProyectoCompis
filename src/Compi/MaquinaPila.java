@@ -1,7 +1,6 @@
 package Compi;
 
 import java.awt.Color;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -185,7 +184,7 @@ public class MaquinaPila {
             if(mem.get(cP) instanceof Method)
                 if(((Method)mem.get(cP)).getName().equals("INV"))
                     invoc++;
-            if(mem.get(cP) instanceof Funcion)
+            if(mem.get(cP) instanceof Func)
                 invoc++;
             if(mem.get(cP) == null)
                 invoc--;
@@ -262,9 +261,9 @@ public class MaquinaPila {
                 Method metodo = (Method)objeto;
                 metodo.invoke(this, null);
             }
-            if(objeto instanceof Funcion){
+            if(objeto instanceof Func){
                 ArrayList params = new ArrayList();
-                Funcion funcion = (Funcion)objeto;
+                Func funcion = (Func)objeto;
                 cP++;
                 while(mem.get(cP) != null){
                     if(mem.get(cP) instanceof String){
@@ -285,7 +284,7 @@ public class MaquinaPila {
     public Config getConfig(){
         return configAct;
     }
-    public static class Gira implements Funcion{
+    public static class Gira implements Func {
         public void ejecuta(Object a, ArrayList params){
             Config config = (Config)a;
             int ang = (config.getAng()+(int)(double)params.get(0))%360;
@@ -293,7 +292,7 @@ public class MaquinaPila {
         }
     }
 
-    public static class Avanza implements Funcion{
+    public static class Avanza implements Func {
         public void ejecuta(Object a, ArrayList params){
             Config config = (Config)a;
             int ang = config.getAng();
@@ -308,7 +307,7 @@ public class MaquinaPila {
         }
     }
 
-    public static class CambiaColor implements Funcion{
+    public static class CambiaColor implements Func {
         @Override
         public void ejecuta(Object a, ArrayList params){
             Config config = (Config)a;
@@ -316,7 +315,7 @@ public class MaquinaPila {
         }
     }
 
-    public static class PincelUP implements Funcion{
+    public static class PincelUP implements Func {
         @Override
         public void ejecuta(Object a, ArrayList params){
             Config config = (Config)a;
@@ -324,7 +323,7 @@ public class MaquinaPila {
         }
     }
 
-    public static class PincelDOWN implements Funcion{
+    public static class PincelDOWN implements Func {
         @Override
         public void ejecuta(Object a, ArrayList params){
             Config config = (Config)a;
